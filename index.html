@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakeven ROAS Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 0.2em;
+        }
+        h2 {
+            font-size: 1.1em;
+            font-weight: normal;
+            color: #ddd;
+            margin-top: 0;
+            margin-bottom: 1.5em;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+        input[type="number"]::placeholder {
+            color: #aaa;
+        }
+        button {
+            background-color: #e63946;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 1.5em;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+        }
+        section {
+            margin-top: 2em;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Breakeven ROAS Calculator</h1>
+        <h2>Instantly calculate the minimum return on ad spend you need to cover all costs and stay profitable. Enter your numbers and make data-driven decisions with confidence.</h2>
+        <form id="calc-form">
+            <input type="number" id="price" placeholder="Selling Price per Unit ($)" step="0.01" required>
+            <input type="number" id="cogs" placeholder="Cost of Goods Sold per Unit ($)" step="0.01" required>
+            <input type="number" id="shipping" placeholder="Shipping Cost per Unit ($)" step="0.01" required>
+            <input type="number" id="fees" placeholder="Transaction Fees (%)" step="0.01" required>
+            <input type="number" id="other" placeholder="Other Variable Costs per Unit ($)" step="0.01" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result" class="result"></div>
+        <section>
+            <h2 style="color:#fff;font-weight:bold;">Why is Breakeven ROAS Important?</h2>
+            <p style="color:#ddd;">ROAS (Return on Advertising Spend) measures how effectively your ads generate revenue. Your breakeven ROAS is the point where the revenue from a sale exactly covers all costs—meaning you're not losing money, but you're not making a profit yet either. Staying above this number ensures you're running profitable ad campaigns.</p>
+        </section>
+    </div>
+    <script>
+        document.getElementById('calc-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const cogs = parseFloat(document.getElementById('cogs').value) || 0;
+            const shipping = parseFloat(document.getElementById('shipping').value) || 0;
+            const feesPercent = parseFloat(document.getElementById('fees').value) || 0;
+            const other = parseFloat(document.getElementById('other').value) || 0;
+
+            const fees = price * (feesPercent / 100);
+            const denominator = price - cogs - shipping - other - fees;
+            let resultText = '';
+            if (denominator <= 0) {
+                resultText = 'Breakeven ROAS cannot be calculated with these inputs.';
+            } else {
+                const roas = price / denominator;
+                resultText = 'Breakeven ROAS: ' + roas.toFixed(2);
+            }
+            document.getElementById('result').textContent = resultText;
+        });
+    </script>
+</body>
+</html>
